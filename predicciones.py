@@ -1,31 +1,65 @@
 #parametros de entrada
+
 cliente={}
-cliente['compras_ultimos_90_dias']=int(input())
-cliente['RFM']=input()
-cliente['dias_desde_ultima_compra']=input()
-cliente['quejas']=input()
-cliente['interacciones_con_el_servicio_al_cliente']=input()
+cliente['compras_90_dias']=int(input())
+cliente['valor_total']=int(input())
+cliente['quejas']=int(input())
+cliente['interacciones']=int(input())
 cliente['seciones_app']=int(input())
 cliente['dias_sin_compra']=int(input())
-print(cliente)
 
 #base de conocimiento
 
-if cliente['compras_ultimos_90_dias']>90:
-    cliente['riesgo']='alto'
-if cliente['quejas']>2:
+if cliente['dias_sin_compra']>90:
+    cliente['status']='riesgo_alto'
+elif cliente['quejas']>2:
     cliente['status']='insatisfecho'
-if cliente['uso_app']
-
+elif cliente['seciones_app']<2:
+    cliente['status']='señal_desenganche'
+else:
+    cliente['status']='regular'
 
 #ingenieria de features
+
+valor_promedio=100
 score_recencia=1/(1+cliente['dias_sin_compra'])
-score_frecuencia=cliente['compras_ultimos_90_dias']/90
-score_monetario=
+score_frecuencia=cliente['compras_90_dias']/90
+score_monetario=cliente['valor_total']/valor_promedio
 score_compromiso=cliente['seciones_app']/7
-score_satisfaccion=1-(cliente['quejas']/cliente['interacciones_con_el_servicio_al_cliente'])
+if cliente['interacciones']>0:
+    score_satisfaccion=1-(cliente['quejas']/cliente['interacciones'])
+else:
+    score_satisfaccion=1
+
+#modelo
+
+probabilidad = (
+    0.3 * (1 - score_recencia) +
+    0.2 * (1 - score_frecuencia) +
+    0.2 * (1 - score_monetario) +
+    0.2 * (1 - score_compromiso) +
+    0.1 * (1 - score_satisfaccion)
+    )
+probabilidad = max(0, min(probabilidad, 1))
+
+#decisiones
+
+if cliente['status']=='insatisfecho' and probabilidad > 0.8:
+    acciones="llamada + descuento + solucion_quejas"
+elif probabilidad > 0.5:
+    acciones="descuento"
+elif probabilidad > 0.3:
+    acciones="promocion"
+else:
+    acciones="nada"
+
+#valor cliente
+
+CLV=cliente['valor_total']*2
 
 #salida
-print('cliente tiene una probabilidad de: ',posibilidad_de_retirarse)
+
+print('status del cliente: ', cliente['status'])
+print('cliente tiene una probabilidad de: ',probabilidad)
 print('debe de tomar la siguientes acciones: ',acciones)
 print('valor que se pierde si se deja ir al cliente: ', CLV)
