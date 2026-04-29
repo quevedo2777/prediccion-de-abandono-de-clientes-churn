@@ -44,8 +44,8 @@ probabilidad = max(0, min(probabilidad, 1))
 
 #decisiones
 
-if cliente['status']=='insatisfecho' and probabilidad > 0.8:
-    acciones="llamada + descuento + solucion_quejas"
+if cliente['status']=='insatisfecho' or probabilidad > 0.8:
+    acciones="llamada + descuento"
 elif probabilidad > 0.5:
     acciones="descuento"
 elif probabilidad > 0.3:
@@ -60,6 +60,6 @@ CLV=cliente['valor_total']*2
 #salida
 
 print('status del cliente: ', cliente['status'])
-print('cliente tiene una probabilidad de: ',probabilidad)
+print(f'Cliente tiene una probabilidad de: {probabilidad:.2%}')
 print('debe de tomar la siguientes acciones: ',acciones)
 print('valor que se pierde si se deja ir al cliente: ', CLV)
