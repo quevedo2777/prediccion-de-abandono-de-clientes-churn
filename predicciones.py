@@ -1,12 +1,13 @@
+#predecir abandono de cliente "churn"
 #parametros de entrada
 
 cliente={}
-cliente['compras_90_dias']=int(input())
-cliente['valor_total']=int(input())
-cliente['quejas']=int(input())
-cliente['interacciones']=int(input())
-cliente['seciones_app']=int(input())
-cliente['dias_sin_compra']=int(input())
+cliente['compras_90_dias']=int(input('compras realizadas en 90 dias: '))
+cliente['valor_total']=int(input('valor total del cliente: '))
+cliente['quejas']=int(input('numero de quejas del ciente: '))
+cliente['interacciones']=int(input('numero de interacciones con el servicio al cliente: '))
+cliente['seciones_app']=int(input('numero de seciones: '))
+cliente['dias_sin_compra']=int(input('dias sin compra: '))
 
 #base de conocimiento
 
@@ -19,7 +20,7 @@ elif cliente['seciones_app']<2:
 else:
     cliente['status']='regular'
 
-#ingenieria de features
+#ingenieria de features(caracteristicas)
 
 valor_promedio=100
 score_recencia=1/(1+cliente['dias_sin_compra'])
